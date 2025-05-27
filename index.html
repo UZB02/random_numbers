@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yashirin Raqamli Kartalar</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      padding: 40px;
+      text-align: center;
+    }
+
+    #card-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .card {
+      width: 100px;
+      height: 140px;
+      margin: 10px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .card.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .card-front {
+      background-color: #2196f3;
+      color: white;
+    }
+
+    .card-back {
+      background-color: white;
+      color: #333;
+      transform: rotateY(180deg);
+      border: 2px solid #2196f3;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4caf50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Yashirin Raqamli Kartalar</h1>
+  <button onclick="generateCards()">Qayta boshlash</button>
+  <div id="card-container"></div>
+
+  <script>
+    const cardCount = 16; // Eng ko‘pi bilan 27 ta bo'lishi mumkin
+
+    function generateCards() {
+      const container = document.getElementById('card-container');
+      container.innerHTML = ''; // Eski kartalarni o‘chiradi
+
+      // 4 dan 30 gacha bo‘lgan sonlar ro‘yxati
+      let numbers = [];
+      for (let i = 4; i <= 30; i++) {
+        numbers.push(i);
+      }
+
+      // Aralashtirish (Fisher-Yates)
+      for (let i = numbers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+      }
+
+      // Tanlangan raqamlar
+      const selectedNumbers = numbers.slice(0, cardCount);
+
+      // Kartalarni yaratish
+      selectedNumbers.forEach(number => {
+        const card = document.createElement('div');
+        card.classList.add('card');
+
+        card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-front">?</div>
+            <div class="card-back">${number}</div>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          card.classList.toggle('flipped');
+        });
+
+        container.appendChild(card);
+      });
+    }
+
+    // Dastlabki yuklashda kartalarni yaratish
+    generateCards();
+  </script>
+</body>
+</html>
