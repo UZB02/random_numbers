@@ -8,7 +8,7 @@
     body {
       font-family: sans-serif;
       background: #f0f0f0;
-      padding: 40px;
+      padding: 40px 20px;
       text-align: center;
     }
 
@@ -16,13 +16,14 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 20px;
+      max-width: 100%;
+      margin: 20px auto 0 auto;
+      gap: 10px;
     }
 
     .card {
-      width: 100px;
-      height: 140px;
-      margin: 10px;
+      width: calc(12.5% - 10px); /* 8 ta bir qatorda */
+      aspect-ratio: 5 / 7;
       perspective: 1000px;
       cursor: pointer;
     }
@@ -48,7 +49,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 1.5rem;
       font-weight: bold;
     }
 
@@ -77,37 +78,53 @@
     button:hover {
       background-color: #45a049;
     }
+
+    /* Ekran kichik bo‘lsa moslashadi */
+    @media (max-width: 900px) {
+      .card {
+        width: calc(25% - 10px); /* 4 ta bir qatorda */
+      }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        width: calc(33.33% - 10px); /* 3 ta bir qatorda */
+      }
+    }
+
+    @media (max-width: 400px) {
+      .card {
+        width: calc(50% - 10px); /* 2 ta bir qatorda */
+      }
+    }
   </style>
 </head>
 <body>
 
+  <h1 style="color: rgb(31, 41, 51); font-family: sans-serif; text-shadow: 3px 3px 5px grey;">BM</h1>
   <h1>Yashirin Raqamli Kartalar</h1>
   <button onclick="generateCards()">Qayta boshlash</button>
   <div id="card-container"></div>
 
   <script>
-    const cardCount = 16; // Eng ko‘pi bilan 27 ta bo'lishi mumkin
+    const cardCount = 16; // 8 ta 2 qator
 
     function generateCards() {
       const container = document.getElementById('card-container');
-      container.innerHTML = ''; // Eski kartalarni o‘chiradi
+      container.innerHTML = '';
 
-      // 4 dan 30 gacha bo‘lgan sonlar ro‘yxati
       let numbers = [];
       for (let i = 4; i <= 30; i++) {
         numbers.push(i);
       }
 
-      // Aralashtirish (Fisher-Yates)
       for (let i = numbers.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
       }
 
-      // Tanlangan raqamlar
       const selectedNumbers = numbers.slice(0, cardCount);
 
-      // Kartalarni yaratish
       selectedNumbers.forEach(number => {
         const card = document.createElement('div');
         card.classList.add('card');
@@ -127,7 +144,6 @@
       });
     }
 
-    // Dastlabki yuklashda kartalarni yaratish
     generateCards();
   </script>
 </body>
